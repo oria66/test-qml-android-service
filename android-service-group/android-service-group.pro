@@ -1,4 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    test-qml-android-service
+    serverService.pro \
+    test-qml-android-service.pro
+
+

@@ -15,6 +15,26 @@ ApplicationWindow {
     ColumnLayout{
         anchors.fill: parent
 
+        Connections {
+            target : pingPong
+            onPong: pongLabel.text = msg
+        }
+
+        ColumnLayout {
+            Label {
+                id: pongLabel
+                Layout.fillWidth: true
+            }
+            TextField {
+                Layout.fillWidth: true
+                placeholderText : "Type a message"
+                onTextChanged: pingPong.ping(text)
+            }
+            Item {
+               Layout.fillHeight: true
+            }
+        }
+
         GroupBox {
             id: groupBox
             Layout.rightMargin: 20
@@ -100,6 +120,6 @@ ApplicationWindow {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.6600000262260437}
+    D{i:0;formeditorZoom:0.8999999761581421}
 }
 ##^##*/
