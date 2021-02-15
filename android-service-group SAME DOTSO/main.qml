@@ -49,7 +49,8 @@ ApplicationWindow {
                             pingPong.stopLogging()
                         }else
                         {
-                            pingPong.startLogging()
+                            permissionsDialog.open()
+
                         }
                     }
                 }
@@ -64,92 +65,30 @@ ApplicationWindow {
                 }
             }
         }
-
-//        GroupBox {
-//            id: groupBox
-//            Layout.rightMargin: 20
-//            Layout.leftMargin: 20
-//            Layout.topMargin: 0
-//            Layout.fillHeight: true
-//            Layout.fillWidth: true
-//            title: qsTr("GPS logging without service")
-
-//            ColumnLayout{
-//                anchors.fill: parent
-
-//                Button {
-//                    id: button
-//                    text: src.active ? qsTr("Stop service") : qsTr("Start service")
-//                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-//                    font.bold: true
-//                    onClicked: src.active ? src.stop() : src.start()
-//                }
-
-//                GridLayout{
-//                    columnSpacing: 20
-//                    rows: 2
-//                    columns: 3
-//                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-//                    Label{
-//                        text: qsTr("Northing: ")
-//                        font.bold: true
-//                    }
-
-//                    Label{
-//                        id: northing
-//                        text: "-"
-//                    }
-
-//                    Label{
-//                        text: "[m]"
-//                    }
-
-//                    Label{
-//                        text: qsTr("Easting: ")
-//                        font.bold: true
-//                    }
-
-//                    Label{
-//                        id: easting
-//                        text: "-"
-//                    }
-
-//                    Label{
-//                        text: "[m]"
-//                    }
-//                }
-
-//                Label{
-//                    id: labelError
-//                    text: "No error"
-//                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-//                }
-//            }
-//        }
-
     }
 
-//    PositionSource {
-//        id: src
-//        updateInterval: 2000
-//        active: false
-//        onPositionChanged: {
-//            var coord = src.position.coordinate;
+    Connections{
+        target: androidHandler
+        function onPermissionsAccepted(){
+            pingPong.startLogging()
+        }
+    }
 
-//            console.log(coord.latitude);
+    Dialog {
+        id: permissionsDialog
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+        title: "Permissions"
+        standardButtons: Dialog.Ok | Dialog.Cancel
 
-//            var utm = Logic.fromLatLon(coord.latitude,coord.longitude);
+        Label{
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            text: "User, can you allow the access?"
+        }
 
-//            northing.text = utm.northing;
-//            easting.text =utm.easting;
-//        }
-//        onSourceErrorChanged: {
-//            labelError.text = sourceError
-//        }
-//    }
-
-
+        onAccepted:  androidHandler.requestAndroidPermissions()
+    }
 }
 
 /*##^##

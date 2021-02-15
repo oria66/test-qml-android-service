@@ -11,6 +11,8 @@
 
 #include <QGeoPositionInfoSource>
 
+#include "androidpermissions.h"
+
 #include "rep_gpsprovider_replica.h"
 #include "rep_gpsprovider_source.h"
 
@@ -91,26 +93,26 @@ public:
 
 };
 
-#if defined (Q_OS_ANDROID)
-bool requestAndroidPermissions(){
-    //Request requiered permissions at runtime
+//#if defined (Q_OS_ANDROID)
+//bool requestAndroidPermissions(){
+//    //Request requiered permissions at runtime
 
-    const QVector<QString> permissions({"android.permission.ACCESS_COARSE_LOCATION",
-                                        "android.permission.ACCESS_BACKGROUND_LOCATION",
-                                        "android.permission.ACCESS_FINE_LOCATION"});
+//    const QVector<QString> permissions({"android.permission.ACCESS_COARSE_LOCATION",
+//                                        "android.permission.ACCESS_BACKGROUND_LOCATION",
+//                                        "android.permission.ACCESS_FINE_LOCATION"});
 
-    for(const QString &permission : permissions){
-        auto result = QtAndroid::checkPermission(permission);
-        if(result == QtAndroid::PermissionResult::Denied){
-            auto resultHash = QtAndroid::requestPermissionsSync(QStringList({permission}));
-            if(resultHash[permission] == QtAndroid::PermissionResult::Denied)
-                return false;
-        }
-    }
+//    for(const QString &permission : permissions){
+//        auto result = QtAndroid::checkPermission(permission);
+//        if(result == QtAndroid::PermissionResult::Denied){
+//            auto resultHash = QtAndroid::requestPermissionsSync(QStringList({permission}));
+//            if(resultHash[permission] == QtAndroid::PermissionResult::Denied)
+//                return false;
+//        }
+//    }
 
-    return true;
-}
-#endif
+//    return true;
+//}
+//#endif
 
 int main(int argc, char *argv[])
 {
@@ -145,8 +147,14 @@ int main(int argc, char *argv[])
 
 
 #if defined (Q_OS_ANDROID)
-    if(!requestAndroidPermissions())
-        return -1;
+    AndroidPermissions permissions;
+
+    //permissions.requestAndroidPermissions();
+
+    engine.rootContext()->setContextProperty("androidHandler", &permissions);
+
+//    if(!requestAndroidPermissions())
+//        return -1;
 #endif
         // Load QML
 
