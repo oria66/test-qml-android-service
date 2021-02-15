@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = server
+TARGET = serverService
 CONFIG += dll
 QT += core remoteobjects androidextras
 

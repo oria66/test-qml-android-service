@@ -97,6 +97,7 @@ ApplicationWindow {
                 }
             }
         }
+
     }
 
     PositionSource {

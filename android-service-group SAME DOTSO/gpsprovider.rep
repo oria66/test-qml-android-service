@@ -1,0 +1,7 @@
+class GpsProvider {
+    PROP(bool isRunningService=false);
+    SLOT(void ping(const QString &msg));
+    SLOT(void startLogging());
+    SLOT(void stopLogging());
+    SIGNAL(loggingData(const QString &msg));
+}
